@@ -31,9 +31,9 @@ def tidy(d,report=False):
             if not os.path.exists(target_path):                
                 # This is a broken symlink.
                 if report:
-                    print 'tidy would delete broken symlink: %s->%s' % (path,target_path)                    
+                    print('tidy would delete broken symlink: %s->%s' % (path,target_path))
                 else:
-                    print 'Deleting broken symlink: %s->%s' % (path,target_path)
+                    print('Deleting broken symlink: %s->%s' % (path,target_path))
                     os.remove(path)                    
 
 def get_target_paths(to_dir,report=False):
@@ -49,15 +49,15 @@ def get_target_paths(to_dir,report=False):
         path = os.path.join(to_dir,filename)
         if filename.endswith('~'):
             if report:
-                print 'Skipping %s' % filename
+                print('Skipping %s' % filename)
             continue            
         elif (not os.path.isfile(path)) and (not os.path.isdir(path)):
             if report:
-                print 'Skipping %s (not a file or directory)' % filename
+                print('Skipping %s (not a file or directory)' % filename)
             continue
         elif filename.startswith('.'):
             if report:
-                print 'Skipping %s (filename has a leading dot)' % filename
+                print('Skipping %s (filename has a leading dot)' % filename)
             continue
         else:
             if HOSTNAME_SEPARATOR in filename:
@@ -70,14 +70,14 @@ def get_target_paths(to_dir,report=False):
                     paths.append(path)
                 else:
                     if report:
-                        print 'Skipping %s (different hostname)' % filename
+                        print('Skipping %s (different hostname)' % filename)
                     continue                    
             else:
                 # This appears to be a filename without a trailing
                 # hostname.
                 if filename + HOSTNAME_SEPARATOR + HOSTNAME in filenames: 
                     if report:
-                        print 'Skipping %s (there is a host-specific version of this file for this host)' % filename
+                        print('Skipping %s (there is a host-specific version of this file for this host)' % filename)
                     continue
                 else:                                            
                     paths.append(path)    
@@ -133,19 +133,19 @@ def link(from_dir,to_dir,report=False):
                 continue
             else:
                 # It's a link to somewhere else.
-                print from_path+" => is already symlinked to "+existing_to_path
+                print(from_path+" => is already symlinked to "+existing_to_path)
         elif os.path.isfile(from_path):
-            print "There's a file in the way at "+from_path
+            print("There's a file in the way at "+from_path)
         elif os.path.isdir(from_path):
-            print "There's a directory in the way at "+from_path
+            print("There's a directory in the way at "+from_path)
         elif os.path.ismount(from_path):
-            print "There's a mount point in the way at "+from_path
+            print("There's a mount point in the way at "+from_path)
         else:
             # The path is clear, make the symlink.
             if report:
-                print 'link would make symlink: %s->%s' % (from_path,to_path)
+                print('link would make symlink: %s->%s' % (from_path,to_path))
             else:
-                print 'Making symlink %s->%s' % (from_path,to_path)
+                print('Making symlink %s->%s' % (from_path,to_path))
                 os.symlink(to_path,from_path)
 
 def usage():
@@ -166,7 +166,7 @@ def main():
     try:
         ACTION = sys.argv[1]
     except IndexError:
-        print usage()
+        print(usage())
         sys.exit(2)
 
     try:
@@ -176,8 +176,8 @@ def main():
     FROM_DIR = os.path.abspath(os.path.expanduser(FROM_DIR))
 
     if not os.path.isdir(FROM_DIR):
-        print "FROM_DIR %s is not a directory!" % FROM_DIR
-        print usage()
+        print("FROM_DIR %s is not a directory!" % FROM_DIR)
+        print(usage())
         sys.exit(2)
 
     if ACTION == 'tidy':
@@ -191,8 +191,8 @@ def main():
         TO_DIR = os.path.abspath(os.path.expanduser(TO_DIR))
 
         if not os.path.isdir(TO_DIR):
-            print "TO_DIR %s is not a directory!" % TO_DIR
-            print usage()
+            print("TO_DIR %s is not a directory!" % TO_DIR)
+            print(usage())
             sys.exit(2)
 
         if ACTION == 'link':
@@ -201,7 +201,7 @@ def main():
             link(FROM_DIR,TO_DIR,report=True)
             tidy(FROM_DIR,report=True)
         else:
-            print usage()
+            print(usage())
             sys.exit(2)
 
 
